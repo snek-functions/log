@@ -7,7 +7,9 @@
   "description": "Generated with `snek-functions init`",
   "author": "snek-at",
   "dependencies": {
-    "@snek-at/functions": "*"
+    "@snek-at/functions": "*",
+    "@types/geoip-lite": "^1.4.1",
+    "geoip-lite": "^1.4.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.19",

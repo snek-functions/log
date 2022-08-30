@@ -1,10 +1,9 @@
-export interface Log {
+export interface LogEntry {
     "timestamp": string,
     "fingerprint": string,
     "user_agent": string,
     "bytes": number,
     "clientIp": string,
-    "extension": string,
     "geo": {
         "srcDest": string,
         "src": string,
@@ -15,7 +14,6 @@ export interface Log {
         }
     },
     "hostname": string,
-    "ip": string,
     "machine": {
         "ram": number,
         "os": string,
@@ -24,6 +22,6 @@ export interface Log {
     "referer": string,
     "request": string,
     "response": number,
-    "tags": [string],
+    "tags": string[],
     "url": string,
 };
