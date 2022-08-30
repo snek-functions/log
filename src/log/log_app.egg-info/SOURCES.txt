@@ -1,0 +1,7 @@
+setup.py
+log/proxy.py
+log/proxy_handler.py
+log_app.egg-info/PKG-INFO
+log_app.egg-info/SOURCES.txt
+log_app.egg-info/dependency_links.txt
+log_app.egg-info/top_level.txt
