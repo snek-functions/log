@@ -1,6 +1,7 @@
 import * as fs from 'fs/promises'
-import { fn } from './factory'
-import { GeoEntry, LogEntry, PackageJson } from './types'
+import {fn} from './factory'
+import {getGeo} from './helper/geo.js'
+import {GeoEntry, LogEntry, PackageJson} from './types'
 
 const log = fn<
   {
@@ -10,13 +11,12 @@ const log = fn<
     tags: string[]
     url: string
   },
-  void
+  'ERROR' | 'SUCCESS'
 >(
   async (args, _, {req, res}) => {
-    const sourceGeo: GeoEntry = await getGeo(req.ip)
-    const destinationGeo: GeoEntry = await getGeo(req.hostname)
-
     try {
+      const sourceGeo: GeoEntry = await getGeo(req.ip)
+      const destinationGeo: GeoEntry = await getGeo(req.hostname)
       const pjson: PackageJson = await fs
         .readFile('./package.json', 'utf-8')
         .then(async res => {
@@ -51,34 +51,40 @@ const log = fn<
       }
 
       await fs.appendFile('./default.log', JSON.stringify(logData) + '\n')
-
-      return 'Success'
+      return 'SUCCESS'
     } catch (e) {
-      return e
+      const logData: LogEntry = {
+        timestamp: new Date().toISOString(),
+        fingerprint: null,
+        user_agent: null,
+        bytes: null,
+        clientIp: null,
+        geo: {
+          src: null,
+          dest: null,
+          srcDest: null,
+          coordinates: {
+            lat: null,
+            lon: null
+          }
+        },
+        hostname: null,
+        machine: null,
+        message: e.message,
+        referer: null,
+        request: null,
+        response: null,
+        tags: ['ERROR', 'CRITICAL'],
+        url: null,
+        function: null
+      }
+      await fs.appendFile('./default.log', JSON.stringify(logData) + '\n')
+      return 'ERROR'
     }
   },
   {
     name: 'log'
   }
 )
-
-async function getGeo(ip) {
-  let geo: GeoEntry = {
-    countryCode: 'FAIL',
-    lat: 99,
-    lon: 99
-  }
-
-  await fetch(
-    `http://ip-api.com/json/${ip}?fields=status,countryCode,lat,lon`
-  ).then(async res => {
-    let response = await res.json()
-    if (response.status !== 'fail') {
-      geo = {...response}
-    }
-  })
-
-  return geo
-}
 
 export default log
