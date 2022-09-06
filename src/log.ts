@@ -27,7 +27,7 @@ const log = fn<
       const logData: LogEntry = {
         timestamp: new Date().toISOString(),
         fingerprint: args.fingerprint,
-        user_agent: req.get('user-agegggnt') ?? 'default_value',
+        user_agent: req.get('user-agent') ?? 'default_value',
         bytes: parseInt(req.get('content-length')) ?? 0,
         clientIp: req.ip,
         geo: {
