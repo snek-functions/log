@@ -4,7 +4,7 @@ export const url = process.env.IS_OFFLINE
   ? process.env.CODESPACE_NAME
     ? `https://${process.env.CODESPACE_NAME}-5000.githubpreview.dev/graphql`
     : 'http://localhost:4000/graphql'
-  : 'https://bf0xierewj.execute-api.eu-central-1.amazonaws.com/graphql'
+  : process.env.ENDPOINT_URL_LOG || process.env.GATSBY_ENDPOINT_URL_LOG
 
 export const fn = makeFn({
   url

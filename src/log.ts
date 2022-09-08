@@ -51,6 +51,7 @@ const log = fn<
       }
 
       await fs.appendFile('./default.log', JSON.stringify(logData) + '\n')
+      
       return 'SUCCESS'
     } catch (e) {
       const logData: LogEntry = {
@@ -78,7 +79,9 @@ const log = fn<
         url: null,
         function: null
       }
+      
       await fs.appendFile('./default.log', JSON.stringify(logData) + '\n')
+      
       return 'ERROR'
     }
   },

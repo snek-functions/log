@@ -10,7 +10,7 @@ export async function getGeo(ip) {
   await fetch(
     `http://ip-api.com/json/${ip}?fields=status,countryCode,lat,lon`
   ).then(async res => {
-    let response = await res.json()
+    const response = await res.json()
     if (response.status !== 'fail') {
       geo = {...response}
     }
