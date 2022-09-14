@@ -1,6 +1,7 @@
 {
   "name": "@snek-functions/log",
   "version": "0.0.1",
+  "main": "dist/index.js",
   "private": true,
   "type": "module",
   "description": "Generated with `snek-functions init`",
