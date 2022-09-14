@@ -14,6 +14,8 @@ const log = fn<
   'ERROR' | 'SUCCESS'
 >(
   async (args, _, {req, res}) => {
+    const timestamp = new Date().toISOString()
+
     try {
       const sourceGeo: GeoEntry = await getGeo(req.ip)
       const destinationGeo: GeoEntry = await getGeo(req.hostname)
@@ -25,7 +27,7 @@ const log = fn<
         })
 
       const logData: LogEntry = {
-        timestamp: new Date().toISOString(),
+        timestamp,
         fingerprint: args.fingerprint,
         user_agent: req.get('user-agent') ?? 'default_value',
         bytes: parseInt(req.get('content-length')) ?? 0,
@@ -51,11 +53,11 @@ const log = fn<
       }
 
       await fs.appendFile('./default.log', JSON.stringify(logData) + '\n')
-      
+
       return 'SUCCESS'
     } catch (e) {
       const logData: LogEntry = {
-        timestamp: new Date().toISOString(),
+        timestamp,
         fingerprint: null,
         user_agent: null,
         bytes: null,
@@ -75,13 +77,13 @@ const log = fn<
         referer: null,
         request: null,
         response: null,
-        tags: ['ERROR', 'CRITICAL'],
+        tags: ['INTERNAL_LOG_ERROR', 'CRITICAL'],
         url: null,
         function: null
       }
-      
+
       await fs.appendFile('./default.log', JSON.stringify(logData) + '\n')
-      
+
       return 'ERROR'
     }
   },
