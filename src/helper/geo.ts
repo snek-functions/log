@@ -1,6 +1,6 @@
 import {GeoEntry} from '../types'
 
-export async function getGeo(ip) {
+export async function getGeo(ip: string) {
   let geo: GeoEntry = {
     countryCode: 'FAIL',
     lat: 99,

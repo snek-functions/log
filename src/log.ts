@@ -1,4 +1,5 @@
 import * as fs from 'fs/promises'
+
 import {fn} from './factory'
 import {getGeo} from './helper/geo.js'
 import {GeoEntry, LogEntry, PackageJson} from './types'
@@ -30,7 +31,7 @@ const log = fn<
         timestamp,
         fingerprint: args.fingerprint,
         user_agent: req.get('user-agent') ?? 'default_value',
-        bytes: parseInt(req.get('content-length')) ?? 0,
+        bytes: parseInt(req.get('content-length') || '') ?? 0,
         clientIp: req.ip,
         geo: {
           src: sourceGeo.countryCode,
@@ -56,34 +57,35 @@ const log = fn<
 
       return 'SUCCESS'
     } catch (e) {
-      const logData: LogEntry = {
-        timestamp,
-        fingerprint: null,
-        user_agent: null,
-        bytes: null,
-        clientIp: null,
-        geo: {
-          src: null,
-          dest: null,
-          srcDest: null,
-          coordinates: {
-            lat: null,
-            lon: null
-          }
-        },
-        hostname: null,
-        machine: null,
-        message: e.message,
-        referer: null,
-        request: null,
-        response: null,
-        tags: ['INTERNAL_LOG_ERROR', 'CRITICAL'],
-        url: null,
-        function: null
+      if (e instanceof Error) {
+        const logData: LogEntry = {
+          timestamp,
+          fingerprint: null,
+          user_agent: null,
+          bytes: null,
+          clientIp: null,
+          geo: {
+            src: null,
+            dest: null,
+            srcDest: null,
+            coordinates: {
+              lat: null,
+              lon: null
+            }
+          },
+          hostname: null,
+          machine: null,
+          message: e.message,
+          referer: null,
+          request: null,
+          response: null,
+          tags: ['INTERNAL_LOG_ERROR', 'CRITICAL'],
+          url: null,
+          function: null
+        }
+
+        await fs.appendFile('./default.log', JSON.stringify(logData) + '\n')
       }
-
-      await fs.appendFile('./default.log', JSON.stringify(logData) + '\n')
-
       return 'ERROR'
     }
   },
