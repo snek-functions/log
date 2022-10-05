@@ -1,9 +1,9 @@
 {
-  "name": "@snek-functions/template",
+  "name": "@snek-functions/log",
   "version": "0.0.1",
-  "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "private": true,
   "type": "module",
   "description": "Generated with `snek-functions init`",
   "author": "snek-at",

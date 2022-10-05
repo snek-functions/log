@@ -1,4 +1,4 @@
-service: template
+service: log
 frameworkVersion: '3'
 
 plugins:
