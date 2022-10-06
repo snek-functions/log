@@ -9,3 +9,6 @@ export const url = process.env.IS_OFFLINE
 export const fn = makeFn({
   url
 })
+
+// SPDX-License-Identifier: (EUPL-1.2)
+// Copyright © 2019-2022 snek.at
